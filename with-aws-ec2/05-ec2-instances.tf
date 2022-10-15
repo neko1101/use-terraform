@@ -20,48 +20,53 @@ module "with_ec2" {
   }
 }
 
-module "with_multi_ec2" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "~> 3.0"
+##
+# NOTE: AWS new account only allow 1 ec2 deployment, verify your account or contact AWS support.
+# Uncomment modules below only if your account is verified, else it will fail.
+##
 
-  for_each = toset(["one", "two", "three"])
+# module "with_multi_ec2" {
+#   source  = "terraform-aws-modules/ec2-instance/aws"
+#   version = "~> 3.0"
 
-  name = "multi-instance-${each.key}"
+#   for_each = toset(["one", "two", "three"])
 
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t2.micro"
-  key_name               = aws_key_pair.user1.key_name
-  monitoring             = true
-  vpc_security_group_ids = [module.security_group.security_group_id]
-  availability_zone      = element(module.vpc.azs, 0)
-  subnet_id              = element(module.vpc.private_subnets, 0)
+#   name = "multi-instance-${each.key}"
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
-}
+#   ami                    = data.aws_ami.ubuntu.id
+#   instance_type          = "t2.micro"
+#   key_name               = aws_key_pair.user1.key_name
+#   monitoring             = true
+#   vpc_security_group_ids = [module.security_group.security_group_id]
+#   availability_zone      = element(module.vpc.azs, 0)
+#   subnet_id              = element(module.vpc.private_subnets, 0)
 
-module "with_spot_ec2" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "~> 3.0"
+#   tags = {
+#     Terraform   = "true"
+#     Environment = "dev"
+#   }
+# }
 
-  name = "spot-instance"
+# module "with_spot_ec2" {
+#   source  = "terraform-aws-modules/ec2-instance/aws"
+#   version = "~> 3.0"
 
-  create_spot_instance = true
-  spot_price           = "0.60"
-  spot_type            = "persistent"
+#   name = "spot-instance"
 
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t2.micro"
-  key_name               = aws_key_pair.user1.key_name
-  monitoring             = true
-  vpc_security_group_ids = [module.security_group.security_group_id]
-  availability_zone      = element(module.vpc.azs, 0)
-  subnet_id              = element(module.vpc.private_subnets, 0)
+#   create_spot_instance = true
+#   spot_price           = "0.60"
+#   spot_type            = "persistent"
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
-}
+#   ami                    = data.aws_ami.ubuntu.id
+#   instance_type          = "t2.micro"
+#   key_name               = aws_key_pair.user1.key_name
+#   monitoring             = true
+#   vpc_security_group_ids = [module.security_group.security_group_id]
+#   availability_zone      = element(module.vpc.azs, 0)
+#   subnet_id              = element(module.vpc.private_subnets, 0)
+
+#   tags = {
+#     Terraform   = "true"
+#     Environment = "dev"
+#   }
+# }
