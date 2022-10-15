@@ -10,6 +10,11 @@ terraform plan
 terraform apply
 ```
 
+## Cleaning up
+```
+terraform destroy
+```
+
 # Terraform
 
 - Website: https://www.terraform.io
